@@ -74,7 +74,6 @@ function plotGaugeChart(info, update){
               mode: "gauge+number",
               value: info.wfreq,
               title: { text: "Belly Button Washing Frequency", font: { size: 24 } },
-              //delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
               gauge: {
                 axis: { 
                     range: [0, 10], 
@@ -91,7 +90,7 @@ function plotGaugeChart(info, update){
                 borderwidth: 2,
                 bordercolor: "gray",
                 steps: [
-                  { range: [0, 2], color: "rgb(176, 131, 7)", name:"0-2"},
+                  { range: [0, 2], color: "rgb(176, 131, 7)" },
                   { range: [2, 4], color: "rgb(186, 158, 7)" },
                   { range: [4, 6], color: "rgb(163, 154, 1)" },
                   { range: [6, 8], color: "rgb(152, 189, 4)" },

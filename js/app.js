@@ -1,7 +1,4 @@
-d3.json("../../samples.json").then(initPage);
-
-//var select = d3.select("#selDataset");
-//select.on("change", optionChanged);
+d3.json("../data/samples.json").then(initPage);
 
 function initPage(data){
     data.names.forEach(name => {
@@ -27,11 +24,14 @@ function initPage(data){
     //For plotting the bubble chart
     plotBubbleChart(sample, false);
 
+    //For plotting the gauge chart
+    plotGaugeChart(info, false);
+
 }
 
 function optionChanged(value){
     console.log(`Valor selecciondo: ${value}`);
-    d3.json("../../samples.json").then(data => {
+    d3.json("../data/samples.json").then(data => {
         info = data.metadata.find(element => element.id == value);
         //Updating the metadata
         var bodyList = d3.select("#sample-metadata > ul");
@@ -43,6 +43,9 @@ function optionChanged(value){
 
         //Updating bubble chart
         plotBubbleChart(sample, true);
+
+        //Updating the gauge chart
+        plotGaugeChart(info, true);
     });
 }
 
@@ -57,6 +60,49 @@ function updateMetadata(info, bodyList){
 
     bodyList.style("padding-left", "5px");
     d3.selectAll("li").style("list-style-type", "none");
+}
+
+function plotGaugeChart(info, update){
+
+    if(update){
+        Plotly.restyle("gauge", "value", [info.wfreq]);
+    }
+    else{
+        var data = [
+            {
+              type: "indicator",
+              mode: "gauge+number",
+              value: info.wfreq,
+              title: { text: "Belly Button Washing Frequency", font: { size: 24 } },
+              //delta: { reference: 400, increasing: { color: "RebeccaPurple" } },
+              gauge: {
+                axis: { 
+                    range: [0, 10], 
+                    tickmode:"array",
+                    ticks:"inside",
+                    tickvals:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+                    ticktext:["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], 
+                    tickwidth: 3,
+                    tickcolor: "black",
+                    
+                },
+                bar: { color: "darkblue" },
+                bgcolor: "white",
+                borderwidth: 2,
+                bordercolor: "gray",
+                steps: [
+                  { range: [0, 2], color: "rgb(176, 131, 7)", name:"0-2"},
+                  { range: [2, 4], color: "rgb(186, 158, 7)" },
+                  { range: [4, 6], color: "rgb(163, 154, 1)" },
+                  { range: [6, 8], color: "rgb(152, 189, 4)" },
+                  { range: [8, 10], color: "rgb(79, 179, 2)" }
+                ]
+              }
+            }
+          ];
+    
+        Plotly.newPlot("gauge", data);
+    }
 }
 
 function plotBubbleChart(sample, update){

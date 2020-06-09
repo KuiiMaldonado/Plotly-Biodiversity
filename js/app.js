@@ -1,4 +1,4 @@
-d3.json("../data/samples.json").then(initPage);
+d3.json("./data/samples.json").then(initPage);
 
 function initPage(data){
     data.names.forEach(name => {
@@ -31,7 +31,7 @@ function initPage(data){
 
 function optionChanged(value){
     console.log(`Valor selecciondo: ${value}`);
-    d3.json("../data/samples.json").then(data => {
+    d3.json("./data/samples.json").then(data => {
         info = data.metadata.find(element => element.id == value);
         //Updating the metadata
         var bodyList = d3.select("#sample-metadata > ul");
